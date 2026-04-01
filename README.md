@@ -1,13 +1,28 @@
 # Causal Inference in Time Series Econometrics
 
-**Published:** 2025-01-17
-**Medium:** [https://medium.com/@kyle-t-jones/causal-inference-in-time-series-econometrics-edfb8d17df52](https://medium.com/@kyle-t-jones/causal-inference-in-time-series-econometrics-edfb8d17df52)
+This project demonstrates causal inference methods for time series econometrics.
 
-## About
+## Project Structure
 
-Place the code for this article in this repository.
-The original article export is saved as `article.md`.
+```
+.
+├── README.md           # This file
+├── main.py            # Main entry point
+├── config.yaml        # Configuration file
+├── requirements.txt   # Python dependencies
+├── src/               # Core functions
+│   ├── core.py        # Causal inference functions
+│   └── plotting.py    # Tufte-style plotting utilities
+├── tests/             # Unit tests
+├── data/              # Data files
+└── images/            # Generated plots and figures
+```
 
-## Files
+## Configuration
 
-Add your `.ipynb`, `.py`, `.yaml`, `.js`, `.ts`, or other project files here.
+Edit `config.yaml` to customize analysis parameters and output settings.
+
+## Causal Inference Methods
+
+- **Granger Causality**: Tests if one time series helps predict another
+- **Difference-in-Differences**: Estimates treatment effects using control groups
