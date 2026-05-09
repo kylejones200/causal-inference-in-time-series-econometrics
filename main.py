@@ -40,7 +40,7 @@ def main():
         raise ValueError("No data source specified")
     
     if config['analysis']['granger_causality']['enabled']:
-                result = perform_granger_causality_test(
+            result = perform_granger_causality_test(
             data, 'x', 'y', config['analysis']['granger_causality']['maxlag']
         )
             if config['analysis']['difference_in_differences']['enabled']:
