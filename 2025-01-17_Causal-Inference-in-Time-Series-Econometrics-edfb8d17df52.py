@@ -28,17 +28,18 @@ class GrangerAnalysis:
                 results[lag][0]['ssr_ftest'][1]
             ]
         return causality_results
-    def plot_causality_results(self, results):
+    def plot_causality_results(self, results, plot: bool = False):
         """Plot p-values for different lag orders"""
         import matplotlib.pyplot as plt
-        plt.figure(figsize=(10, 6))
-        plt.plot(results.index, results['p-value'], marker='o')
-        plt.axhline(y=0.05, color='r', linestyle='--', label='5% significance')
-        plt.xlabel('Lag Order')
-        plt.ylabel('p-value')
-        plt.title('Granger Causality Test Results')
-        plt.legend()
-        plt.show()
+        if plot:
+            plt.figure(figsize=(10, 6))
+            plt.plot(results.index, results['p-value'], marker='o')
+            plt.axhline(y=0.05, color='r', linestyle='--', label='5% significance')
+            plt.xlabel('Lag Order')
+            plt.ylabel('p-value')
+            plt.title('Granger Causality Test Results')
+            plt.legend()
+            plt.show()
 
 
 class SVARModel:

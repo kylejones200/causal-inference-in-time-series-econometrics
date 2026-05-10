@@ -32,17 +32,18 @@ def difference_in_differences(y_treated: np.ndarray, y_control: np.ndarray,
 def plot_causal_effect(y_treated: np.ndarray, y_control: np.ndarray,
                       treatment_period: int, output_path: Path):
     """Plot causal effect """
-    fig, ax = plt.subplots(figsize=(10, 6))
+                      if plot:
+        fig, ax = plt.subplots(figsize=(10, 6))
     
-    time = np.arange(len(y_treated))
-    ax.plot(time, y_treated, label="Treated", color="#4A90A4", linewidth=1.2)
-    ax.plot(time, y_control, label="Control", color="#D4A574", linewidth=1.2)
-    ax.axvline(treatment_period, color='red', linestyle='--', linewidth=1.2, label='Treatment')
+        time = np.arange(len(y_treated))
+        ax.plot(time, y_treated, label="Treated", color="#4A90A4", linewidth=1.2)
+        ax.plot(time, y_control, label="Control", color="#D4A574", linewidth=1.2)
+        ax.axvline(treatment_period, color='red', linestyle='--', linewidth=1.2, label='Treatment')
     
-    ax.set_xlabel("Time")
-    ax.set_ylabel("Outcome")
-    ax.legend(loc='best')
+        ax.set_xlabel("Time")
+        ax.set_ylabel("Outcome")
+        ax.legend(loc='best')
     
-    plt.savefig(output_path, dpi=100, bbox_inches="tight")
-    plt.close()
+        plt.savefig(output_path, dpi=100, bbox_inches="tight")
+        plt.close()
 
