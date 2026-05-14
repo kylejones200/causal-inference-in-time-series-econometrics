@@ -24,5 +24,5 @@ Edit `config.yaml` to customize analysis parameters and output settings.
 
 ## Causal Inference Methods
 
-- **Granger Causality**: Tests if one time series helps predict another
-- **Difference-in-Differences**: Estimates treatment effects using control groups
+- Granger Causality: Tests if one time series helps predict another
+- Difference-in-Differences: Estimates treatment effects using control groups
