@@ -45,16 +45,16 @@ def main():
         )
             if config['analysis']['difference_in_differences']['enabled']:
                 y_treated = np.cumsum(np.random.normal(0.1, 1, config['data']['n_periods']))
-        y_control = np.cumsum(np.random.normal(0, 1, config['data']['n_periods']))
-        did = difference_in_differences(
+y_control = np.cumsum(np.random.normal(0, 1, config['data']['n_periods']))
+did = difference_in_differences(
             y_treated, y_control, config['analysis']['difference_in_differences']['treatment_period']
         )
-        logging.info(f"Difference-in-differences estimate: {did:.4f}")
-        plot_causal_effect(y_treated, y_control,
+logging.info(f"Difference-in-differences estimate: {did:.4f}")
+plot_causal_effect(y_treated, y_control,
                           config['analysis']['difference_in_differences']['treatment_period'],
                           output_dir / 'causal_effect.png')
     
-    logging.info(f"\nAnalysis complete. Figures saved to {output_dir}")
+logging.info(f"\nAnalysis complete. Figures saved to {output_dir}")
 
 if __name__ == "__main__":
     main()

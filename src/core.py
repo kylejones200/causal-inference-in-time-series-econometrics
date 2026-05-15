@@ -32,7 +32,7 @@ def difference_in_differences(y_treated: np.ndarray, y_control: np.ndarray,
 def plot_causal_effect(y_treated: np.ndarray, y_control: np.ndarray,
                       treatment_period: int, output_path: Path):
     """Plot causal effect """
-                      if plot:
+    if plot:
         fig, ax = plt.subplots(figsize=(10, 6))
     
         time = np.arange(len(y_treated))
