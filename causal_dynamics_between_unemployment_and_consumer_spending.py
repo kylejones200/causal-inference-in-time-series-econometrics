@@ -12,63 +12,73 @@ Original file is located at
     https://colab.research.google.com/drive/1bvBO35GZwpmy69OdaQZ9-Z2ZOgvq6LRb
 """
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 from pandas_datareader import data as web
 from statsmodels.tsa.stattools import adfuller, grangercausalitytests
 
-# Fetch data from FRED
-start_date, end_date = "2010-01-01", "2022-12-31"
-df = pd.concat(
-    [
-        web.DataReader("UNRATE", "fred", start_date, end_date),
-        web.DataReader("PCE", "fred", start_date, end_date),
-    ],
-    axis=1,
-).rename(columns={"UNRATE": "unemployment_rate", "PCE": "consumer_spending"})
 
-# Reset index to use date column explicitly
-df = df.reset_index().rename(columns={"DATE": "date"})
+def main():
+    # Fetch data from FRED
+    start_date, end_date = "2010-01-01", "2022-12-31"
+    df = pd.concat(
+        [
+            web.DataReader("UNRATE", "fred", start_date, end_date),
+            web.DataReader("PCE", "fred", start_date, end_date),
+        ],
+        axis=1,
+    ).rename(columns={"UNRATE": "unemployment_rate", "PCE": "consumer_spending"})
 
-# Save DataFrame to CSV
-df.to_csv("unemployment_spending.csv", index=False)
+    # Reset index to use date column explicitly
+    df = df.reset_index().rename(columns={"DATE": "date"})
 
-# Plot data with proper years on x-axis
-fig, ax1 = plt.subplots(figsize=(10, 6))
-ax1.set_title("Unemployment Rate and Consumer Spending Over Time")
-ax1.set_xlabel("Year")
-ax1.set_ylabel("Unemployment Rate (%)", color="red")
-ax1.plot(df["date"], df["unemployment_rate"], color="red")
+    # Save DataFrame to CSV
+    df.to_csv("unemployment_spending.csv", index=False)
 
-ax2 = ax1.twinx()
-ax2.set_ylabel("Consumer Spending (Billions)", color="blue")
-ax2.plot(df["date"], df["consumer_spending"], color="blue")
+    # Plot data with proper years on x-axis
+    fig, ax1 = plt.subplots(figsize=(10, 6))
+    ax1.set_title("Unemployment Rate and Consumer Spending Over Time")
+    ax1.set_xlabel("Year")
+    ax1.set_ylabel("Unemployment Rate (%)", color="red")
+    ax1.plot(df["date"], df["unemployment_rate"], color="red")
 
-plt.savefig("unemployment_consumer_spending.png")
-plt.show()
+    ax2 = ax1.twinx()
+    ax2.set_ylabel("Consumer Spending (Billions)", color="blue")
+    ax2.plot(df["date"], df["consumer_spending"], color="blue")
 
-# Stationarity tests (ADF)
-for col in ["unemployment_rate", "consumer_spending"]:
-    adf_result = adfuller(df[col])
-    logger.info(f"{col} ADF Statistic: {adf_result[0]:.3f}, p-value: {adf_result[1]:.3f}")
+    plt.savefig("unemployment_consumer_spending.png")
+    plt.show()
 
-# Differencing to achieve stationarity
-df["unemployment_rate_diff"] = df["unemployment_rate"].diff()
-df["consumer_spending_diff"] = df["consumer_spending"].diff()
+    # Stationarity tests (ADF)
+    for col in ["unemployment_rate", "consumer_spending"]:
+        adf_result = adfuller(df[col])
+        logger.info(
+            f"{col} ADF Statistic: {adf_result[0]:.3f}, p-value: {adf_result[1]:.3f}"
+        )
 
-# ADF Test after differencing
-for col in ["unemployment_rate_diff", "consumer_spending_diff"]:
-    adf_result = adfuller(df[col].dropna())
-    logger.info(f"{col} ADF Statistic: {adf_result[0]:.3f}, p-value: {adf_result[1]:.3f}")
+    # Differencing to achieve stationarity
+    df["unemployment_rate_diff"] = df["unemployment_rate"].diff()
+    df["consumer_spending_diff"] = df["consumer_spending"].diff()
 
-# Granger causality tests
-logger.info("\nGranger Causality Tests:")
-logger.info("Does unemployment rate Granger-cause consumer spending?")
-granger_test_ur_cs = grangercausalitytests(
-    df[["consumer_spending_diff", "unemployment_rate_diff"]].dropna(), maxlag=4
-)
+    # ADF Test after differencing
+    for col in ["unemployment_rate_diff", "consumer_spending_diff"]:
+        adf_result = adfuller(df[col].dropna())
+        logger.info(
+            f"{col} ADF Statistic: {adf_result[0]:.3f}, p-value: {adf_result[1]:.3f}"
+        )
 
-logger.info("\nDoes consumer spending Granger-cause unemployment rate?")
-granger_test_cs_ur = grangercausalitytests(
-    df[["unemployment_rate_diff", "consumer_spending_diff"]].dropna(), maxlag=4
-)
+    # Granger causality tests
+    logger.info("\nGranger Causality Tests:")
+    logger.info("Does unemployment rate Granger-cause consumer spending?")
+    granger_test_ur_cs = grangercausalitytests(
+        df[["consumer_spending_diff", "unemployment_rate_diff"]].dropna(), maxlag=4
+    )
+
+    logger.info("\nDoes consumer spending Granger-cause unemployment rate?")
+    granger_test_cs_ur = grangercausalitytests(
+        df[["unemployment_rate_diff", "consumer_spending_diff"]].dropna(), maxlag=4
+    )
+
+
+if __name__ == "__main__":
+    main()
