@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Causal Dynamics Between Unemployment and Consumer Spending.ipynb
 
 import logging
