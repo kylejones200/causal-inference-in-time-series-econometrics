@@ -42,23 +42,25 @@ def plot_causal_effect(
     output_path: Path,
 ):
     """Plot causal effect"""
-    if plot:
-        fig, ax = plt.subplots(figsize=(10, 6))
+    if not plot:
+        return
 
-        time = np.arange(len(y_treated))
-        ax.plot(time, y_treated, label="Treated", color="#4A90A4", linewidth=1.2)
-        ax.plot(time, y_control, label="Control", color="#D4A574", linewidth=1.2)
-        ax.axvline(
-            treatment_period,
-            color="red",
-            linestyle="--",
-            linewidth=1.2,
-            label="Treatment",
-        )
+    fig, ax = plt.subplots(figsize=(10, 6))
 
-        ax.set_xlabel("Time")
-        ax.set_ylabel("Outcome")
-        ax.legend(loc="best")
+    time = np.arange(len(y_treated))
+    ax.plot(time, y_treated, label="Treated", color="#4A90A4", linewidth=1.2)
+    ax.plot(time, y_control, label="Control", color="#D4A574", linewidth=1.2)
+    ax.axvline(
+        treatment_period,
+        color="red",
+        linestyle="--",
+        linewidth=1.2,
+        label="Treatment",
+    )
 
-        plt.savefig(output_path, dpi=100, bbox_inches="tight")
-        plt.close()
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Outcome")
+    ax.legend(loc="best")
+
+    plt.savefig(output_path, dpi=100, bbox_inches="tight")
+    plt.close()

@@ -26,3 +26,11 @@ Edit `config.yaml` to customize analysis parameters and output settings.
 
 - Granger Causality: Tests if one time series helps predict another
 - Difference-in-Differences: Estimates treatment effects using control groups
+
+## Disclaimer
+
+Educational/demo code only. Not financial, safety, or engineering advice. Use at your own risk. Verify results independently before any production or operational use.
+
+## License
+
+MIT — see [LICENSE](LICENSE).

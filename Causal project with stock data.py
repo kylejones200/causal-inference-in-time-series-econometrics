@@ -2,9 +2,6 @@
 
 Magics and shell lines are commented out. Run with a normal Python interpreter."""
 
-
-# --- code cell ---
-
 from datetime import datetime
 
 import matplotlib.pyplot as plt
@@ -13,7 +10,11 @@ import yfinance as yf
 from statsmodels.tsa.stattools import adfuller
 
 
-# Function to fetch stock data with error handling
+def check_stationarity(series, name):
+    result = adfuller(series.dropna())
+    print(f"{name}: p-value = {result[1]:.4f}")
+
+
 def fetch_stock_data(ticker, start_date, end_date):
     try:
         data = yf.download(ticker, start=start_date, end=end_date)
@@ -26,44 +27,42 @@ def fetch_stock_data(ticker, start_date, end_date):
         return None
 
 
-# Function to get data
 def get_data():
     start_date = "2020-01-01"
     end_date = datetime.now().strftime("%Y-%m-%d")
-
-    xom = fetch_stock_data("XOM", start_date, end_date)  # ExxonMobil
-    wti = fetch_stock_data("USO", start_date, end_date)  # WTI proxy
-
-    # If either dataset is missing, return an empty DataFrame
+    xom = fetch_stock_data("XOM", start_date, end_date)
+    wti = fetch_stock_data("USO", start_date, end_date)
     if xom is None or wti is None:
         print("Error: Missing data, exiting script.")
         return pd.DataFrame()
-
-    # Combine into a DataFrame
     data = pd.DataFrame({"XOM": xom, "WTI": wti}).dropna()
     return data
 
 
-# Get the data
-data = get_data()
+def main() -> None:
+    data = get_data()
 
-# Stop execution if data is missing
-if data.empty:
-    raise ValueError("No valid data available for analysis.")
+    if data.empty:
+        raise ValueError("No valid data available for analysis.")
 
-# Plot the original data
-plt.figure(figsize=(12, 6))
-plt.plot(data.index, data["XOM"], label="ExxonMobil")
-plt.plot(data.index, data["WTI"], label="WTI Crude")
-plt.title("ExxonMobil Stock vs WTI Crude Prices")
-plt.xlabel("Time")
-plt.ylabel("Price")
-plt.legend()
-plt.grid()
-plt.show()
+    plt.figure(figsize=(12, 6))
+
+    plt.plot(data.index, data["XOM"], label="ExxonMobil")
+
+    plt.plot(data.index, data["WTI"], label="WTI Crude")
+
+    plt.title("ExxonMobil Stock vs WTI Crude Prices")
+
+    plt.xlabel("Time")
+
+    plt.ylabel("Price")
+
+    plt.legend()
+
+    plt.grid()
+
+    plt.show()
 
 
-# Function to test stationarity
-def check_stationarity(series, name):
-    result = adfuller(series.dropna())  # Drop NaN values for ADF test
-    print(f"{name}: p-value = {result[1]:.4f}")
+if __name__ == "__main__":
+    main()
