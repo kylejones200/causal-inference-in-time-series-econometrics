@@ -41,26 +41,17 @@ def get_data():
 
 def main() -> None:
     data = get_data()
-
     if data.empty:
         raise ValueError("No valid data available for analysis.")
 
     plt.figure(figsize=(12, 6))
-
     plt.plot(data.index, data["XOM"], label="ExxonMobil")
-
     plt.plot(data.index, data["WTI"], label="WTI Crude")
-
     plt.title("ExxonMobil Stock vs WTI Crude Prices")
-
     plt.xlabel("Time")
-
     plt.ylabel("Price")
-
     plt.legend()
-
     plt.grid()
-
     plt.show()
 
 

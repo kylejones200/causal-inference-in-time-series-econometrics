@@ -18,7 +18,7 @@ logging.basicConfig(
 )
 
 
-def load_config(config_path: Path = None) -> dict:
+def load_config(config_path: Path | None = None) -> dict:
     """Load configuration from YAML file."""
     if config_path is None:
         config_path = Path(__file__).parent / "config.yaml"
@@ -34,7 +34,6 @@ def main():
         "--output-dir", type=Path, default=None, help="Output directory"
     )
     args = parser.parse_args()
-
     config = load_config(args.config)
     output_dir = (
         Path(args.output_dir)
@@ -42,7 +41,6 @@ def main():
         else Path(config["output"]["figures_dir"])
     )
     output_dir.mkdir(exist_ok=True)
-
     if config["data"]["generate_synthetic"]:
         np.random.seed(config["data"]["seed"])
         x = np.cumsum(np.random.normal(0, 1, config["data"]["n_periods"]))
@@ -52,11 +50,11 @@ def main():
         raise ValueError("No data source specified")
 
     if config["analysis"]["granger_causality"]["enabled"]:
-        result = perform_granger_causality_test(
+        perform_granger_causality_test(
             data, "x", "y", config["analysis"]["granger_causality"]["maxlag"]
         )
         if config["analysis"]["difference_in_differences"]["enabled"]:
-            y_treated = np.cumsum(np.random.normal(0.1, 1, config["data"]["n_periods"]))
+            np.cumsum(np.random.normal(0.1, 1, config["data"]["n_periods"]))
 
 
 y_control = np.cumsum(np.random.normal(0, 1, config["data"]["n_periods"]))

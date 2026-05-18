@@ -1,16 +1,11 @@
 """Core functions for causal inference in time series econometrics."""
 
-import logging
 from pathlib import Path
-from typing import Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from statsmodels.tsa.stattools import grangercausalitytests
-
-# Configure logging
-logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 def perform_granger_causality_test(
@@ -30,7 +25,6 @@ def difference_in_differences(
     post_treated = y_treated[treatment_period:].mean()
     pre_control = y_control[:treatment_period].mean()
     post_control = y_control[treatment_period:].mean()
-
     did = (post_treated - pre_treated) - (post_control - pre_control)
     return did
 
@@ -46,7 +40,6 @@ def plot_causal_effect(
         return
 
     fig, ax = plt.subplots(figsize=(10, 6))
-
     time = np.arange(len(y_treated))
     ax.plot(time, y_treated, label="Treated", color="#4A90A4", linewidth=1.2)
     ax.plot(time, y_control, label="Control", color="#D4A574", linewidth=1.2)
@@ -57,10 +50,8 @@ def plot_causal_effect(
         linewidth=1.2,
         label="Treatment",
     )
-
     ax.set_xlabel("Time")
     ax.set_ylabel("Outcome")
     ax.legend(loc="best")
-
     plt.savefig(output_path, dpi=100, bbox_inches="tight")
     plt.close()
