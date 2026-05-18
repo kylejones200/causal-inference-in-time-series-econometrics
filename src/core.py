@@ -20,7 +20,7 @@ def difference_in_differences(y_treated: np.ndarray, y_control: np.ndarray, trea
     did = post_treated - pre_treated - (post_control - pre_control)
     return did
 
-def plot_causal_effect(y_treated: np.ndarray, y_control: np.ndarray, treatment_period: int, output_path: Path, plot: bool = False):
+def plot_causal_effect(y_treated: np.ndarray, y_control: np.ndarray, treatment_period: int, output_path: Path, plot: bool=False):
     """Plot causal effect"""
     if not plot:
         return
