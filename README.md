@@ -2,6 +2,12 @@
 
 This project demonstrates causal inference methods for time series econometrics.
 
+## Business context
+
+Econometric data is full of correlations that mean nothing. Ice cream sales and drowning rates move together — because both respond to summer. Interest rates and bond prices move together — because one mechanically determines the other. The challenge is not finding relationships in time series. It is finding ones that reflect a real causal mechanism.
+
+Causal inference in econometrics is a toolkit of methods for making that distinction. Each method makes different assumptions about what you know and does not know about the data-generating process.
+
 ## Project Structure
 
 ```
